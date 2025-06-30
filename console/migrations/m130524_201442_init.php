@@ -53,6 +53,7 @@ class m130524_201442_init extends Migration
             'gender' => 'Мужчина',
             'by_user_id' => 1,
             'rating' => 0,
+            'image'=>0,
         ]);
     }
 

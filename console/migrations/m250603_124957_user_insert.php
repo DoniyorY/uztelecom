@@ -9,8 +9,8 @@ class m250603_124957_user_insert extends Migration
      */
     public function up()
     {
-        $user = User::findOne(['id' => 1]);
-        if ($user) return false;
+        $user = \common\models\User::findOne(['id' => 1]);
+        if ($user) return true;
         $this->insert('user', [
             'id' => 1,
             'username' => 'admin',
@@ -30,7 +30,7 @@ class m250603_124957_user_insert extends Migration
             'by_user_id' => 1,
             'rating' => 0,
         ]);
-        return false;
+
     }
 
     /**
