@@ -30,7 +30,7 @@ class DepartmentController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
-                /*'access' => [
+                'access' => [
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
@@ -54,7 +54,7 @@ class DepartmentController extends Controller
                             'roles' => ['create'],
                         ]
                     ]
-                ]*/
+                ]
             ]
         );
     }

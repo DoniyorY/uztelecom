@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Company;
 use common\models\search\CompanySearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,6 +28,22 @@ class CompanyController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions'=>['index'],
+                            'roles'=>['view'],
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['create','update'],
+                            'roles' => ['HR','admin'],
+                        ],
+
+                    ]
+                ]
             ]
         );
     }
@@ -71,7 +88,7 @@ class CompanyController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -94,7 +111,7 @@ class CompanyController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

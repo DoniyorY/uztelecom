@@ -112,6 +112,9 @@ $companies = \common\models\Company::find()->orderBy(['name'=>SORT_ASC])->all();
                                 <a href="<?= \yii\helpers\Url::to(['employees/index']) ?>" class="nav-link"> Карточки сотрудников </a>
                             </li>
                             <li class="nav-item">
+                                <a href="<?= \yii\helpers\Url::to(['company/index']) ?>" class="nav-link"> Филиалы </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="<?= \yii\helpers\Url::to(['department/index']) ?>" class="nav-link"> Отделы </a>
                             </li>
                             <li class="nav-item">
