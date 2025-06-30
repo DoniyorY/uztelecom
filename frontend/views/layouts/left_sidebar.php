@@ -140,8 +140,6 @@ $companies = \common\models\Company::find()->orderBy(['name'=>SORT_ASC])->all();
                                     <div class="collapse menu-dropdown" id="docs_<?= $i; ?>">
                                         <ul class="nav nav-sm flex-column">
 
-                                            <li class="nav-item"><a href="<?= Url::to(['documents/registry', 'company_id' => $item->id]) ?>" class="nav-link">Реестр приказов</a></li>
-
                                             <li class="nav-item"><a href="<?= Url::to(['documents/employee-list', 'company_id' => $item->id]) ?>"
                                                         class="nav-link">Список сотрудников</a>
                                             </li>

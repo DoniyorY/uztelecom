@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'pager' => Yii::$app->params['gridViewPager'],
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'id',
+                //'id',
                 'fullname',
                 'mobile_phone',
                 [

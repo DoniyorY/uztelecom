@@ -145,17 +145,17 @@ class DepartmentController extends Controller
 
         if (!is_null($q)) {
             $query = (new \yii\db\Query())
-                ->select(['id', 'username'])
+                ->select(['id', 'fullname'])
                 ->from('user')
                 ->where(['status' => 10])
-                ->andWhere(['like', 'username', $q])
+                ->andWhere(['like', 'fullname', $q])
                 ->limit(10);
             $command = $query->createCommand();
             $data = $command->queryAll();
             $out['results'] = array_values($data);;
 
         } elseif ($id > 0) {
-            $out['results'] = ['id' => $id, 'text' => \common\models\User::findOne($id)->username];
+            $out['results'] = ['id' => $id, 'text' => \common\models\User::findOne($id)->fullname];
         }
         return $out;
     }

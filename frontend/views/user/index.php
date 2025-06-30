@@ -64,7 +64,6 @@ echo Alert::widget() ?>
             <!--end card-body-->
             <div class="card-body">
                 <div class="table-responsive table-card mb-4">
-
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         //'filterModel' => $searchModel,
@@ -84,16 +83,16 @@ echo Alert::widget() ?>
                         },
                         'tableOptions' => [
                             'id' => 'tasksTable',
-                            'class' => 'table align-middle table-nowrap table-striped-columns mb-0'
+                            'class' => 'table align-middle  table-striped-columns mb-0'
                         ],
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-                            [
+                            /*[
                                     'attribute' => 'terminal_employee_no',
                                      'value' => function ($model) {
                                         return 'Empl:'.$model->terminal_employee_no.' | Card:'.$model->terminal_card;
                                      }
-                            ],
+                            ],*/
                             'username',
                             'fullname',
                             'phone_number',
@@ -118,7 +117,7 @@ echo Alert::widget() ?>
                                     }
                                 }
                             ],
-                            [
+                            /*[
                                 'header' => 'ЛК №',
                                 'format' => 'raw',
                                 'value' => function ($model) {
@@ -129,7 +128,7 @@ echo Alert::widget() ?>
                                            return Html::a('№ '.$employee_id,['employees/view','id'=>$employee_id],['class'=>'btn btn-link']);
                                        }
                                 }
-                            ],
+                            ],*/
                             [
                                 'attribute' => 'status',
                                 'value' => function ($data) {

@@ -37,7 +37,7 @@ $map = \yii\helpers\ArrayHelper::map(Department::find()->all(), 'id', 'info');
         <div class="col-md-3 mt-4">
             <div class="form-group">
                 <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']) ?>
-                <?= Html::resetButton('Сбросить', ['class' => 'btn btn-outline-secondary']) ?>
+                <?= Html::a('Сбросить', ['index'],['class' => 'btn btn-outline-secondary']) ?>
             </div>
         </div>
     </div>

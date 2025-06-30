@@ -2,16 +2,15 @@
 
 use yii\db\Migration;
 
-class m250613_123700_add_column_to_employees extends Migration
+class m250630_200734_add_position_id_to_employee extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-
-        $this->addColumn('employees', 'position_id', $this->integer());
-
+        $this->addColumn('employees', 'position_id', $this->integer()->notNull());
+        $this->addColumn('employees','company_id',$this->integer()->notNull());
     }
 
     /**
@@ -19,7 +18,7 @@ class m250613_123700_add_column_to_employees extends Migration
      */
     public function safeDown()
     {
-        echo "m250613_123700_add_column_to_employees cannot be reverted.\n";
+        echo "m250630_200734_add_position_id_to_employee cannot be reverted.\n";
 
         return false;
     }
@@ -33,7 +32,7 @@ class m250613_123700_add_column_to_employees extends Migration
 
     public function down()
     {
-        echo "m250613_123700_add_column_to_employees cannot be reverted.\n";
+        echo "m250630_200734_add_position_id_to_employee cannot be reverted.\n";
 
         return false;
     }

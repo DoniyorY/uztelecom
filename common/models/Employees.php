@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $department_id
  * @property int $position_id
+ * @property int $company_id
  * @property int $user_id
  * @property string $fullname
  * @property int $sex
@@ -58,13 +59,19 @@ class Employees extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fullname', 'sex', 'birthday', 'nationality', 'family_status', 'passport_series', 'passport_pinfl', 'passport_end_date', 'passport_whois', 'citizenship', 'birthday_city', 'postcode', 'mobile_phone', 'city', 'area', 'address', 'address_registration', 'image', 'created', 'updated', 'status'], 'required'],
+            [['fullname', 'sex', 'birthday', 'nationality', 'family_status', 'passport_series', 'passport_pinfl', 'passport_end_date', 'passport_whois', 'citizenship', 'birthday_city', 'postcode', 'mobile_phone', 'city', 'area', 'address', 'address_registration', 'image', 'created', 'updated', 'status', 'department_id', 'position_id', 'company_id'], 'required'],
             [['sex', 'birthday', 'nationality', 'family_status', 'passport_end_date', 'citizenship', 'birthday_city', 'postcode', 'created', 'updated', 'status'], 'default', 'value' => null],
-            [['sex', 'nationality', 'family_status', 'citizenship', 'birthday_city', 'postcode', 'created', 'updated', 'status', 'user_id'], 'integer'],
+            [['sex', 'nationality', 'family_status', 'citizenship', 'birthday_city', 'postcode', 'created', 'updated', 'status', 'user_id', 'department_id', 'position_id', 'company_id'], 'integer'],
             [['fullname', 'passport_series', 'passport_pinfl', 'passport_inn', 'passport_whois', 'mobile_phone', 'work_phone', 'city', 'area', 'address', 'address_registration', 'temporary_registration_address', 'image'], 'string', 'max' => 255],
-            [['tra_start_date', 'tra_end_date', ], 'string', 'max' => 20],
+            [['tra_start_date', 'tra_end_date',], 'string', 'max' => 20],
             [['tra_start_date', 'tra_end_date'], 'default', 'value' => 0],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, pdf'],
+            [['fullname', 'passport_pinfl'], 'exist', 'targetClass' => \common\models\Employees::className(),
+                'targetAttribute' => [
+                    'fullname' => 'fullname',
+                    'passport_pinfl' => 'passport_pinfl'
+                ]
+            ],
         ];
     }
 
@@ -102,6 +109,9 @@ class Employees extends \yii\db\ActiveRecord
             'created' => 'Дата создания',
             'updated' => 'Дата обновления',
             'status' => 'Статус',
+            'company_id' => 'Филиал',
+            'department_id' => 'Отдел',
+            'position_id' => 'Должность'
         ];
     }
 

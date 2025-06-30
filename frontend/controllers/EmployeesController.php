@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\AuthAssignment;
 use common\models\Company;
 use common\models\Department;
 use common\models\Position;
@@ -53,7 +54,9 @@ class EmployeesController extends Controller
                                 'create',
                                 'add-child',
                                 'make-order',
-                                'employee-import'
+                                'employee-import',
+                                'department',
+                                'position'
                             ],
                             'roles' => ['view']
                         ],
@@ -76,6 +79,14 @@ class EmployeesController extends Controller
                 ]
             ]
         );
+    }
+
+    public function beforeAction($action)
+    {
+        if ($action->id == 'department' || $action->id == 'position') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -508,6 +519,8 @@ class EmployeesController extends Controller
             $model->mobile_phone = $user->phone_number;
             $model->fullname = $user->fullname;
             $model->user_id = $user->id;
+            $model->department_id=$user->department_id;
+            $model->position_id=$user->position_id;
         }
 
         if ($this->request->isPost) {
@@ -525,7 +538,6 @@ class EmployeesController extends Controller
                     $user->verification_token = null;
                     $user->token = $this->generateToken();
 
-
                     $user->department_id = $model->department_id;
                     $user->position_id = $model->position_id;
                     $user->phone_number = $model->mobile_phone;
@@ -533,7 +545,15 @@ class EmployeesController extends Controller
                     $user->gender = ($model->sex == 506) ? 'Мужчина' : 'Женщина';
                     $user->by_user_id = Yii::$app->user->id;
                     $user->rating = 0;
-                    $user->save(false);
+                    $user->terminal_employee_no=0;
+                    $user->terminal_card=0;
+                    if ($user->save(false)){
+                        $auth = new AuthAssignment();
+                        $auth->user_id = $user->id;
+                        $auth->item_name='employee';
+                        $auth->created_at=time();
+                        $auth->save(false);
+                    }
                     $model->user_id = $user->id;
                 }
                 $files = UploadedFile::getInstance($model, 'imageFile');
@@ -617,6 +637,45 @@ class EmployeesController extends Controller
             return \Yii::$app->response->sendFile($file);
         }
         throw new NotFoundHttpException('The File does not exist.');
+    }
+
+    public function actionDepartment()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $department = Department::findAll(['company_id' => $cat_id]);
+                foreach ($department as $item) {
+                    $out[] = ['id' => $item->id, 'name' => $item->name];
+                }
+                return ['output' => $out, 'selected' => ''];
+            }
+        }
+        return ['output' => '', 'selected' => ''];
+    }
+
+    public function actionPosition()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $ids = $_POST['depdrop_parents'];
+            $cat_id = empty($ids[0]) ? null : $ids[0];
+            $subcat_id = empty($ids[1]) ? null : $ids[1];
+            if ($cat_id != null) {
+                $position = Position::findAll(['company_id' => $cat_id, 'department_id' => $subcat_id]);
+                foreach ($position as $item) {
+                    $out[] = ['id' => $item->id, 'name' => $item->name];
+                }
+
+
+                return ['output' => $out, 'selected' => ''];
+            }
+        }
+        return ['output' => '', 'selected' => ''];
     }
 
     /**
