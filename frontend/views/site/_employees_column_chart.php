@@ -5,7 +5,7 @@
     </div><!-- end card header -->
 
     <div class="card-body">
-        <div id="simple_pie_chart" data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]' class="apex-charts" dir="ltr"></div>
+        <div id="column_chart" data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]' class="apex-charts" dir="ltr"></div>
     </div><!-- end card-body -->
 </div><!-- end card -->
 
