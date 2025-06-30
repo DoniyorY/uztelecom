@@ -169,6 +169,11 @@ $this->title = ($model->fullname) ? $model->fullname : $model->username;
                             Сменить пароль
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#changePosition" role="tab">
+                           Сменить отдел / должность
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body p-4">
@@ -323,6 +328,11 @@ $this->title = ($model->fullname) ? $model->fullname : $model->username;
                     <div class="tab-pane" id="changePassword" role="tabpanel">
                         <?= $this->render('_change_password_form', [
                             'user_password' => $user_password,
+                        ]) ?>
+                    </div>
+                    <div class="tab-pane" id="changePosition" role="tabpanel">
+                        <?= $this->render('_change_position',[
+                                'user_id'=>$model->id,
                         ]) ?>
                     </div>
                 </div>

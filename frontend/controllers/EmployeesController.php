@@ -578,7 +578,7 @@ class EmployeesController extends Controller
                     $user_work->salary = $user->position->salary;
                     $user_work->one_hour = $user->position->one_hour;
                     $user_work->bid = $user->position->bid;
-                    $user_work->status_id = 0;
+                    $user_work->status_id = 1;
                     $user_work->created_at = time();
                     if ($user_work->save(false)) {
                         return $this->redirect(['view', 'id' => $model->id]);

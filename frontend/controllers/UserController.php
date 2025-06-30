@@ -43,13 +43,20 @@ class UserController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'position-list', 'change-password', 'balance'],
+                            'actions' => [
+                                'index',
+                                'view',
+                                'position-list',
+                                'change-password',
+                                'balance',
+                                'department-list'
+                            ],
                             'roles' => ['view'],
                         ],
                         [
                             'allow' => true,
-                            'actions' => ['create'],
-                            'roles' => ['create'],
+                            'actions' => ['change-user-department'],
+                            'roles' => ['hr','admin'],
                         ],
                         [
                             'allow' => true,
@@ -74,7 +81,9 @@ class UserController extends Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'position-list' or $action->id == 'reset-password') {
+        if ($action->id == 'position-list'
+            or $action->id == 'reset-password'
+            or $action->id == 'department-list') {
             $this->enableCsrfValidation = false;
         }
 
@@ -121,19 +130,34 @@ class UserController extends Controller
         ]);
     }
 
+    public function actionDepartmentList()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $out = \common\models\Department::find()->select(['id', 'name'])
+                    ->where(['company_id' => $cat_id])->asArray()->all();
+                return ['output' => $out, 'selected' => ''];
+            }
+        }
+        return ['output' => '', 'selected' => ''];
+    }
+
     public function actionPositionList()
     {
-
-        if (\Yii::$app->request->isPost) {
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $out = [];
-            if (isset($_POST['depdrop_parents'])) {
-                $parents = $_POST['depdrop_parents'];
-                if ($parents != null) {
-                    $cat_id = $parents[0];
-                    $out = $positions = \common\models\Position::find()->select(['id', 'name'])->where(['department_id' => $cat_id])->asArray()->all();
-                    return ['output' => $out, 'selected' => ''];
-                }
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $ids = $_POST['depdrop_parents'];
+            $cat_id = empty($ids[0]) ? null : $ids[0];
+            $subcat_id = empty($ids[1]) ? null : $ids[1];
+            if ($cat_id != null) {
+                $data = \common\models\Position::find()->select(['id', 'name'])
+                    ->where(['company_id' => $cat_id, 'department_id' => $subcat_id])->asArray()->all();
+                return ['output' => $data, 'selected' => ''];
             }
         }
         return ['output' => '', 'selected' => ''];
@@ -308,6 +332,48 @@ class UserController extends Controller
             }
         } else {
             $model->loadDefaultValues();
+        }
+    }
+
+    public function actionChangeUserDepartment()
+    {
+        if ($this->request->isPost) {
+            $post = Yii::$app->request->post('ChangePosition');
+            $user_work = UserWork::findOne([
+                'user_id' => $post['user_id'],
+                'status_id' => 1
+            ]);
+            $user_work->status_id = 0;
+            $user_work->updated_at = time();
+            $user_work->update(false);
+            $position = Position::findOne(['id' => $post['position_id']]);
+            if (!$position) {
+                Yii::$app->session->setFlash('warning', 'Ошибка изменения должности сотрудника: Position is not found');
+                return $this->redirect(\Yii::$app->request->referrer);
+            }
+            $new_work = new UserWork([
+                'user_id' => $post['user_id'],
+                'position_id' => $post['position_id'],
+                'department_id' => $post['department_id'],
+                'company_id' => $post['company_id'],
+                'created_at' => time(),
+                'updated_at' => time(),
+                'salary' => $position->salary,
+                'one_hour' => $position->one_hour,
+                'bid' => $post['bid_id'],
+                'status_id' => 1
+            ]);
+            $new_work->save(false);
+            $user = User::findOne(['id' => $post['user_id']]);
+
+            $user->department_id = $post['department_id'];
+            $user->position_id = $post['position_id'];
+            $user->company_id = $post['company_id'];
+            $user->updated_at = time();
+
+            $user->update(false);
+
+            return $this->redirect(Yii::$app->request->referrer);
         }
     }
 
