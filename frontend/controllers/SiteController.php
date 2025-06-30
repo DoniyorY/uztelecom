@@ -29,7 +29,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'transliteration', 'helpdesk', 'balances'],
+                        'actions' => ['logout', 'index', 'transliteration', 'helpdesk', 'balances', 'get-pie'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -159,6 +159,27 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    public function actionGetPie()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $employees = (new \yii\db\Query())->select(['id', 'fullname', 'sex'])
+            ->from('employees')
+            ->all();
+
+        $menCount = 0;
+        $womenCount = 0;
+
+        foreach ($employees as $e) {
+            if ($e['sex'] === 506) {
+                $menCount++;
+            } elseif ($e['sex'] === 507) {
+                $womenCount++;
+            }
+        }
+
+        return ['men' => $menCount, 'women' => $womenCount];
     }
 
     /**

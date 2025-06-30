@@ -30,10 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="text-center mt-sm-5 mb-4 text-white-50">
                         <div>
                             <a href="<?php echo yii::$app->homeUrl; ?>" class="d-inline-block auth-logo">
-                                <img src="<?php echo $base; ?>/logo/simma_hr.png" alt="" height="50">
+                                <img src="<?php echo $base; ?>/logo/uztelecom_logo.png" alt="" height="100">
                             </a>
                         </div>
-                        <p class="mt-3 fs-15 fw-medium">Simma Eco System: HR & TaskManager - Система автоматизации отдельных процессов</p>
+                        <p class="mt-3 fs-15 fw-medium">Uztelecom: HR & TaskManager - Система автоматизации отдельных процессов</p>
                     </div>
                 </div>
             </div>
@@ -65,23 +65,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?= $form->field($model, 'password')->passwordInput() ?>
 
                                 <?= $form->field($model, 'rememberMe')->checkbox([
-                                    'template' => "<div class=\"offset-lg-1 col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
+                                    'template' => "<div class=\"col-lg-6 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
                                 ]) ?>
 
                                     <div class="mt-4">
                                         <?= Html::submitButton('Войти', ['class' => 'btn btn-success w-100', 'name' => 'login-button']) ?>
-                                    </div>
-
-                                    <div class="mt-4 text-center">
-                                        <div class="signin-other-title">
-                                            <h5 class="fs-13 mb-4 title">Sign In with</h5>
-                                        </div>
-                                        <div>
-                                            <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i class="ri-facebook-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-google-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i class="ri-twitter-fill fs-16"></i></button>
-                                        </div>
                                     </div>
                                 <?php ActiveForm::end(); ?>
                             </div>
@@ -105,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-lg-12">
                     <div class="text-center">
                         <p class="mb-0 text-muted">&copy;
-                            <script>document.write(new Date().getFullYear())</script> SIMMA ECO-SYSTEM
+                            <script>document.write(new Date().getFullYear())</script> UZTELECOM
                         </p>
                     </div>
                 </div>

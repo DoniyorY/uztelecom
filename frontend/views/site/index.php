@@ -229,8 +229,11 @@ $this->title = 'Главная';
 </div><!--end row-->
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-3">
         <?= $this->render('_employees_pie_chart') ?>
+    </div>
+    <div class="col-md-9">
+
     </div>
 </div>
 
