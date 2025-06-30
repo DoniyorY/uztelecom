@@ -238,7 +238,7 @@ $this->title = 'Главная';
 </div>
 
 <div class="row">
-    <div class="col-xxl-8">
+    <div class="col-xxl-12 d-none">
         <div class="card">
             <div class="card-header align-items-center d-flex">
                 <h4 class="card-title mb-0 flex-grow-1">Recent Applicants</h4>

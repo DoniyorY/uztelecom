@@ -6,6 +6,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -29,7 +30,15 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'transliteration', 'helpdesk', 'balances', 'get-pie'],
+                        'actions' => [
+                            'logout',
+                            'index',
+                            'transliteration',
+                            'helpdesk',
+                            'balances',
+                            'get-pie',
+                            'get-column-chart'
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -180,6 +189,34 @@ class SiteController extends Controller
         }
 
         return ['men' => $menCount, 'women' => $womenCount];
+    }
+
+    public function actionGetColumnChart()
+    {
+        $this->response->format = Response::FORMAT_JSON;
+        $employees = (new \yii\db\Query())->select(['e.id', 'e.fullname', 'e.sex', 'p.company_id', 'c.name as company_name'])
+            ->from('employees e')
+            ->innerJoin(['u' => 'user'], 'e.user_id = u.id')
+            ->innerJoin(['p' => 'position'], 'u.position_id = p.id')
+            ->leftJoin(['c' => 'company'], 'p.company_id = c.id')
+            ->leftJoin(['gender_dir' => 'directory_list'], 'e.sex = gender_dir.id')
+            ->all();
+        $arr = ArrayHelper::index($employees, NULL, 'company_name');
+        $arr_counts = [];
+        foreach ($arr as $key => $item) {
+            $women_count = 0;
+            $men_count = 0;
+            foreach ($item as $v){
+                if ($v['sex'] == 506) $men_count++;
+                if ($v['sex'] == 507) $women_count++;
+            }
+            $arr_counts[$key] = [
+                'men' => $men_count,
+                'women' => $women_count,
+            ];
+        }
+
+        return $arr_counts;
     }
 
     /**

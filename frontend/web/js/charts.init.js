@@ -37,53 +37,107 @@ fetch(url)
 
 
 // Simple Column Charts
-var columnOptions = {
-    series: [{
-        name: 'Мужчины',
-        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-    }, {
-        name: 'Женщины',
-        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-    }],
-    chart: {
-        type: 'bar',
-        height: 350
-    },
-    plotOptions: {
-        bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            borderRadius: 5,
-            borderRadiusApplication: 'end'
-        },
-    },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        show: true,
-        width: 2,
-        colors: ['transparent']
-    },
-    xaxis: {
-        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-    },
-    yaxis: {
-        title: {
-            text: 'Количество'
-        }
-    },
-    fill: {
-        opacity: 1
-    },
-    tooltip: {
-        y: {
-            formatter: function (val) {
-                return val
+
+url = baseUrl + '/site/get-column-chart';
+
+fetch(url)
+    .then(response => response.json())
+    .then(rawData => {
+        var categories = [];
+        var menData = [];
+        var womenData = [];
+
+        for (var branchName in rawData) {
+            if (rawData.hasOwnProperty(branchName)) {
+                categories.push(branchName);
+                menData.push(rawData[branchName].men);
+                womenData.push(rawData[branchName].women);
             }
         }
-    }
-};
 
-var columnChart = new ApexCharts(document.querySelector("#column_chart"), columnOptions);
-columnChart.render();
+        var options = {
+            series: [
+                {
+                    name: 'Мужчины',
+                    data: menData
+                },
+                {
+                    name: 'Женщины',
+                    data: womenData
+                }
+            ],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+                toolbar: {
+                    show: true
+                },
+                zoom: {
+                    enabled: true
+                }
+            },
+
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    legend: {
+                        position: 'bottom',
+                        offsetX: -10,
+                        offsetY: 0
+                    }
+                }
+            }],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    borderRadius: 5,
+                    borderRadiusApplication: 'end',
+                    borderRadiusWhenStacked: 'last',
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            style: {
+                                fontSize: '13px',
+                                fontWeight: 900
+                            }
+                        }
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: categories,
+                labels: {
+                    rotate: -45
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Общее количество'
+                }
+            },
+            legend: {
+                position: 'right',
+                offsetY: 40
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val;
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#column_chart"), options);
+        chart.render();
+    })
+    .catch(error => {
+        console.error('Ошибка при получении данных для графика:', error);
+    });
