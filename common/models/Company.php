@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ * @property string $region_id
  */
 class Company extends \yii\db\ActiveRecord
 {
@@ -28,8 +29,9 @@ class Company extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name','region_id'], 'required'],
             [['name'], 'string', 'max' => 50],
+            [['region_id'], 'integer'],
         ];
     }
 

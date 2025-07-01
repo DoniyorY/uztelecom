@@ -87,7 +87,8 @@ class CompanyController extends Controller
         $model = new Company();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post())) {
+                $model->save();
                 return $this->redirect(['index']);
             }
         } else {
@@ -110,7 +111,8 @@ class CompanyController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->save();
             return $this->redirect(['index']);
         }
 
