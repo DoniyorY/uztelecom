@@ -17,7 +17,7 @@ class CompanySearch extends Company
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id','region_id'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -60,6 +60,7 @@ class CompanySearch extends Company
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'region_id' => $this->region_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

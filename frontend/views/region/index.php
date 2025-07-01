@@ -34,8 +34,29 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-lg-12">
         <div class="card" id="tasksList">
             <div class="card-header border-0">
-                <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">Список отделов</h5>
+                <div class="row">
+                    <div class="col-md-10">
+                        <h5 class="card-title mb-0 flex-grow-1">Список регионов</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Добавить регион
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Новый регион</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?=$this->render('_form',['model'=>new Region()])?>
+                        </div>
+
+                    </div>
                 </div>
             </div>
             <!--end card-body-->
@@ -66,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
                             'name',
-                            [
+                            /*[
                                 'attribute' => 'parent_id',
                                 'value' => function ($data) {
                                     if ($data->parent) {
@@ -76,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 },
                                 'format'=>'raw',
-                            ],
+                            ],*/
                         ],
                     ]); ?>
                 </div>

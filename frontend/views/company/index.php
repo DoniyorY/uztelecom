@@ -1,6 +1,8 @@
 <?php
 
 use common\models\Company;
+use common\models\Region;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -21,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a
-                                href="<?=Yii::$app->homeUrl?>">Главная</a></li>
+                                href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
                     <li class="breadcrumb-item active"><?= ($this->title) ? $this->title : '' ?></li>
                 </ol>
             </div>
@@ -43,22 +45,33 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+            'pager' => Yii::$app->params['gridViewPager'],
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
+                //'id',
+                [
+                    'attribute' => 'region_id',
+                    'value' => function ($data) {
+                        if ($data->region) {
+                            return $data->region->name;
+                        } else {
+                            return "Не задано!!!";
+                        }
+                    },
+                    'filter' => ArrayHelper::map(Region::find()->all(), 'id', 'name'),
+                ],
                 'name',
                 [
                     'class' => ActionColumn::className(),
                     'urlCreator' => function ($action, Company $model, $key, $index, $column) {
                         return Url::toRoute([$action, 'id' => $model->id]);
                     },
-                    'template'=>'{update}',
+                    'template' => '{update}',
                 ],
             ],
         ]); ?>
     </div>
-
 
 
 </div>

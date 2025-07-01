@@ -14,7 +14,7 @@ use yii\filters\VerbFilter;
 class RegionController extends Controller
 {
     /**
-    /**
+     * /**
      * Lists all Region models.
      *
      * @return string
@@ -29,6 +29,18 @@ class RegionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionCreate()
+    {
+        $model = new Region();
+        $model->parent_id = 0;
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['index']);
+            }
+        }
+    }
+
     protected function findModel($id)
     {
         if (($model = Region::findOne(['id' => $id])) !== null) {
