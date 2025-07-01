@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-<?php $form = ActiveForm::begin(['action' => \yii\helpers\Url::to(['create'])]) ?>
+<?php $form = ActiveForm::begin(['method'=>'post']) ?>
 <div class="row">
     <div class="col-md-12">
         <?= $form->field($model, 'name') ?>

@@ -23,13 +23,27 @@ class RegionController extends Controller
     {
         $searchModel = new RegionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        if ($this->request->isPost){
+            $this->actionCreate();
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
 
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->save();
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
     public function actionCreate()
     {
         $model = new Region();

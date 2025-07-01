@@ -104,7 +104,7 @@ $companies = \common\models\Company::find()->orderBy(['name'=>SORT_ASC])->all();
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#hr_block" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-id-card-line"></i> <span data-key="t-dashboards">Отдель кадров</span>
+                        <i class="ri-id-card-line"></i> <span data-key="t-dashboards">Отдел кадров</span>
                     </a>
                     <div class="collapse menu-dropdown" id="hr_block">
                         <ul class="nav nav-sm flex-column">
