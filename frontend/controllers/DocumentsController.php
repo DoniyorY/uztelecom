@@ -5,6 +5,8 @@ namespace frontend\controllers;
 use common\models\Company;
 use common\models\RegistryDocument;
 use common\models\search\RegistryDocumentSearch;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\db\Query;
@@ -13,6 +15,32 @@ use common\models\Department;
 
 class DocumentsController extends Controller
 {
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => [
+                                'registry',
+                                'employee-list',
+                                'employee-children',
+                                'staffing-schedule',
+                                'staffing-list',
+                                'birthday'
+                            ],
+                            'roles' => ['HR', 'admin'],
+                        ],
+
+                    ]
+                ]
+            ]
+        );
+    }
 
     public function actionRegistry($company_id)
     {
@@ -27,6 +55,23 @@ class DocumentsController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'company' => $company
+        ]);
+    }
+
+    public function actionBirthday()
+    {
+        $date_begin = strtotime(date('Y-m-01'));
+        $date_end = strtotime(date('Y-m-31'));
+        $query = (new Query())
+            ->select(['*'])
+            ->from('employees')
+            //->where(['between', 'birthday', $date_begin, $date_end])
+            ->all();
+        echo "<pre>";
+        print_r($query);
+        die();
+        return $this->render('employees_birthday', [
+
         ]);
     }
 

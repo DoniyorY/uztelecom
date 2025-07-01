@@ -9,7 +9,7 @@ class m250630_200734_add_position_id_to_employee extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('employees', 'position_id', $this->integer()->notNull());
+       // $this->addColumn('employees', 'position_id', $this->integer()->notNull());
         $this->addColumn('employees','company_id',$this->integer()->notNull());
     }
 

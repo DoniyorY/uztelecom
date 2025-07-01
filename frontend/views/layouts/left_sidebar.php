@@ -111,18 +111,7 @@ $companies = \common\models\Company::find()->orderBy(['name'=>SORT_ASC])->all();
                             <li class="nav-item">
                                 <a href="<?= \yii\helpers\Url::to(['employees/index']) ?>" class="nav-link"> Карточки сотрудников </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="<?= \yii\helpers\Url::to(['region/index']) ?>" class="nav-link"> Регионы </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?= \yii\helpers\Url::to(['company/index']) ?>" class="nav-link"> Филиалы </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?= \yii\helpers\Url::to(['department/index']) ?>" class="nav-link"> Отделы </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?= \yii\helpers\Url::to(['position/index']) ?>" class="nav-link"> Должности </a>
-                            </li>
+
                             <li class="nav-item">
                                 <a href="<?php echo \yii\helpers\Url::to(['user/index']); ?>" class="nav-link"> Пользователи</a>
                             </li>
@@ -136,6 +125,10 @@ $companies = \common\models\Company::find()->orderBy(['name'=>SORT_ASC])->all();
                     </a>
                     <div class="collapse menu-dropdown" id="userReports">
                         <ul class="nav nav-sm flex-column">
+                            <li class="nav-item"><a href="<?= Url::to(['documents/birthday']) ?>"
+                                                    class="nav-link">Список дней рождения</a>
+                            </li>
+                            <hr style="color:white">
                             <?php $i = 1;
                             foreach ($companies as $key => $item): ?>
                                 <li class="nav-item">
@@ -244,6 +237,18 @@ $companies = \common\models\Company::find()->orderBy(['name'=>SORT_ASC])->all();
                         </a>
                         <div class="collapse menu-dropdown" id="settingsCollapse">
                             <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="<?= \yii\helpers\Url::to(['region/index']) ?>" class="nav-link"> Регионы </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= \yii\helpers\Url::to(['company/index']) ?>" class="nav-link"> Филиалы </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= \yii\helpers\Url::to(['department/index']) ?>" class="nav-link"> Отделы </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= \yii\helpers\Url::to(['position/index']) ?>" class="nav-link"> Должности </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="<?= \yii\helpers\Url::to(['auth-item/index']) ?>" class="nav-link"> Роли
                                         сотрудников </a>
