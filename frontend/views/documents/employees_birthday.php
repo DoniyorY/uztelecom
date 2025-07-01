@@ -36,15 +36,17 @@ $this->title='Списки именинников';
             </tr>
             </thead>
             <tbody>
+            <?php $i=1; foreach ($query as $item):?>
             <tr>
-                <td></td>
-                <td></td>
-                <td class="table-primary"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><?=$i++?></td>
+                <td><?=$item['fullname']?></td>
+                <td class="table-primary"><?=date('d.m.Y',$item['birthday'])?></td>
+                <td><?=$item['mobile_phone']?></td>
+                <td><?=$item['company_name']?></td>
+                <td><?=$item['department_name']?></td>
+                <td><?=$item['position_name']?></td>
             </tr>
+            <?php endforeach;?>
             </tbody>
         </table>
     </div>

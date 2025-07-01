@@ -23,6 +23,7 @@ class RegionController extends Controller
     {
         $searchModel = new RegionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider->query->orderBy(['name' => SORT_ASC]);
         if ($this->request->isPost){
             $this->actionCreate();
         }

@@ -60,18 +60,27 @@ class DocumentsController extends Controller
 
     public function actionBirthday()
     {
-        $date_begin = strtotime(date('Y-m-01'));
-        $date_end = strtotime(date('Y-m-31'));
-        $query = (new Query())
-            ->select(['*'])
-            ->from('employees')
-            //->where(['between', 'birthday', $date_begin, $date_end])
-            ->all();
-        echo "<pre>";
-        print_r($query);
-        die();
-        return $this->render('employees_birthday', [
+        $currentMonth = date('m'); // 01–12
 
+        $query = (new Query())
+            ->select([
+                'e.fullname',
+                'e.mobile_phone as mobile_phone',
+                'e.birthday',
+                'd.name as department_name',
+                'p.name as position_name',
+                'c.name as company_name'
+            ])
+            ->from('employees e')
+            ->innerJoin('user u', 'u.id = e.user_id')
+            ->innerJoin('position p', 'u.position_id = p.id')
+            ->innerJoin('department d', 'u.department_id = d.id')
+            ->innerJoin('company c', 'p.company_id = c.id')
+            ->where(new \yii\db\Expression('MONTH(FROM_UNIXTIME(e.birthday)) = :month', [':month' => $currentMonth]))
+            ->orderBy([new \yii\db\Expression('DAY(FROM_UNIXTIME(e.birthday)) ASC'), 'fullname' => SORT_ASC])
+            ->all();
+        return $this->render('employees_birthday', [
+            'query' => $query
         ]);
     }
 
