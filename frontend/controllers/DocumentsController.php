@@ -31,11 +31,11 @@ class DocumentsController extends Controller
                                 'employee-children',
                                 'staffing-schedule',
                                 'staffing-list',
-                                'birthday'
+                                'birthday',
+                                'fix-data',
                             ],
                             'roles' => ['HR', 'admin'],
                         ],
-
                     ]
                 ]
             ]
@@ -61,7 +61,8 @@ class DocumentsController extends Controller
     public function actionBirthday()
     {
         $currentMonth = date('m'); // 01–12
-
+        $date_begin = date('01.m.Y');
+        $date_end = date('t.m.Y');
         $query = (new Query())
             ->select([
                 'e.fullname',
@@ -76,12 +77,39 @@ class DocumentsController extends Controller
             ->innerJoin('position p', 'u.position_id = p.id')
             ->innerJoin('department d', 'u.department_id = d.id')
             ->innerJoin('company c', 'p.company_id = c.id')
-            ->where(new \yii\db\Expression('MONTH(FROM_UNIXTIME(e.birthday)) = :month', [':month' => $currentMonth]))
-            ->orderBy([new \yii\db\Expression('DAY(FROM_UNIXTIME(e.birthday)) ASC'), 'fullname' => SORT_ASC])
-            ->all();
+            ->orderBy([new \yii\db\Expression('DAY(FROM_UNIXTIME(e.birthday)) ASC'), 'fullname' => SORT_ASC]);
+
+        if ($get=\Yii::$app->request->get('Search')){
+            $date_begin=$get['date_begin'];
+            $date_end=$get['date_end'];
+            $query->where(new \yii\db\Expression(
+                "DATE_FORMAT(FROM_UNIXTIME(e.birthday), '%m-%d') BETWEEN :start AND :end",
+                [':start' => $date_begin, ':end' => $date_end]
+            ));
+        }else{
+            $query->where(new \yii\db\Expression('MONTH(FROM_UNIXTIME(e.birthday)) = :month', [':month' => $currentMonth]));
+        }
+
+
+        $title = 'Списки именинников за период с ' . $date_begin . ' по ' . $date_end;
+
         return $this->render('employees_birthday', [
-            'query' => $query
+            'query' => $query->all(),
+            'title' => $title,
         ]);
+    }
+
+    public function actionFixData()
+    {
+        $employees = Employees::find()->all();
+        foreach ($employees as $e) {
+            $e->department_id = $e->user->department_id;
+            $e->position_id = $e->user->position_id;
+            $e->company_id = $e->user->position->company_id;
+            $e->update(false);
+            $e->user->company_id = $e->user->position->company_id;
+            $e->user->update(false);
+        }
     }
 
     public function actionEmployeeList($company_id, $gender = null)
